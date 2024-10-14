@@ -1,0 +1,53 @@
+name: maplibre_flutter_gpu
+description: "A new Flutter project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.0-334.2.beta
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_gpu:
+    sdk: flutter
+  
+  # Protobuf
+  fixnum: ^1.1.0
+  protobuf: ^3.1.0
+
+  # Ffi / Native assets
+  ffi: ^2.1.3
+  flutter_gpu_shaders: ^0.1.3
+  native_assets_cli: ^0.8.0
+  native_toolchain_c: ^0.5.4
+
+  # Network
+  http: ^1.2.2
+
+  # Map
+  flutter_map: 
+    path: ../flutter_map
+  maplibre_style_spec:
+    path: ../maplibre_style_spec
+
+  # Utils
+  collection: ^1.19.0
+  dart_earcut: ^1.1.0
+  latlong2: ^0.9.1
+  logging: ^1.2.0
+  vector_math: ^2.1.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - build/shaderbundles/
