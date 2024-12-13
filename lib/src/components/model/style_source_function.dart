@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:maplibre_flutter_gpu/src/components/utils/zoned_http_client.dart';
 import 'package:maplibre_style_spec/maplibre_style_spec.dart' as spec;
 import 'package:http/http.dart' as http;
 
@@ -27,7 +28,7 @@ typedef StyleSourceFunction = Future<spec.Style> Function();
 /// thrown.
 StyleSourceFunction createNetworkStyleSource(Uri uri) {
   return () async {
-    final response = await http.get(uri);
+    final response = await zonedHttpClient.get(uri);
 
     if (response.statusCode == 200) {
       return spec.Style.fromJson(jsonDecode(response.body));

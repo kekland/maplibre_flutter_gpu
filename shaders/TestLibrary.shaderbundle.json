@@ -1,10 +1,18 @@
 {
-  "SimpleVertex": {
+  "FillVertex": {
       "type": "vertex",
-      "file": "shaders/simple.vert"
+      "file": "shaders/fill.vert"
   },
-  "SimpleFragment": {
+  "FillFragment": {
       "type": "fragment",
-      "file": "shaders/simple.frag"
+      "file": "shaders/fill.frag"
+  },
+  "LineVertex": {
+      "type": "vertex",
+      "file": "shaders/line.vert"
+  },
+  "LineFragment": {
+      "type": "fragment",
+      "file": "shaders/line.frag"
   }
 }

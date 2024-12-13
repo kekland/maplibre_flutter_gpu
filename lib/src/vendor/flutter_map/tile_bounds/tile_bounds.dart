@@ -1,8 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map/src/layer/tile_layer/tile_bounds/tile_bounds_at_zoom.dart';
-import 'package:flutter_map/src/layer/tile_layer/tile_range.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:meta/meta.dart';
+import 'package:maplibre_flutter_gpu/src/vendor/flutter_map/tile_bounds/tile_bounds_at_zoom.dart';
+import 'package:maplibre_flutter_gpu/src/vendor/flutter_map/tile_range.dart';
 
 /// The bounding box of a tile.
 @immutable
@@ -76,8 +76,7 @@ class DiscreteTileBounds extends TileBounds {
   /// Return the [TileBoundsAtZoom] for the given zoom level (cached).
   @override
   TileBoundsAtZoom atZoom(int zoom) {
-    return _tileBoundsAtZoomCache.putIfAbsent(
-        zoom, () => _tileBoundsAtZoomImpl(zoom));
+    return _tileBoundsAtZoomCache.putIfAbsent(zoom, () => _tileBoundsAtZoomImpl(zoom));
   }
 
   /// Calculate the [TileBoundsAtZoom] for the given zoom level.
@@ -89,8 +88,8 @@ class DiscreteTileBounds extends TileBounds {
       pixelBounds = crs.getProjectedBounds(zoomDouble)!;
     } else {
       pixelBounds = Bounds<double>(
-        crs.latLngToPoint(_latLngBounds!.southWest, zoomDouble),
-        crs.latLngToPoint(_latLngBounds!.northEast, zoomDouble),
+        crs.latLngToPoint(_latLngBounds.southWest, zoomDouble),
+        crs.latLngToPoint(_latLngBounds.northEast, zoomDouble),
       );
     }
 
@@ -117,8 +116,7 @@ class WrappedTileBounds extends TileBounds {
 
   @override
   TileBoundsAtZoom atZoom(int zoom) {
-    return _tileBoundsAtZoomCache.putIfAbsent(
-        zoom, () => _tileBoundsAtZoomImpl(zoom));
+    return _tileBoundsAtZoomCache.putIfAbsent(zoom, () => _tileBoundsAtZoomImpl(zoom));
   }
 
   WrappedTileBoundsAtZoom _tileBoundsAtZoomImpl(int zoom) {
@@ -129,30 +127,22 @@ class WrappedTileBounds extends TileBounds {
       pixelBounds = crs.getProjectedBounds(zoomDouble)!;
     } else {
       pixelBounds = Bounds<double>(
-        crs.latLngToPoint(_latLngBounds!.southWest, zoomDouble),
-        crs.latLngToPoint(_latLngBounds!.northEast, zoomDouble),
+        crs.latLngToPoint(_latLngBounds.southWest, zoomDouble),
+        crs.latLngToPoint(_latLngBounds.northEast, zoomDouble),
       );
     }
 
     (int, int)? wrapX;
     if (crs.wrapLng case final wrapLng?) {
-      final wrapXMin =
-          (crs.latLngToPoint(LatLng(0, wrapLng.$1), zoomDouble).x / _tileSize)
-              .floor();
-      final wrapXMax =
-          (crs.latLngToPoint(LatLng(0, wrapLng.$2), zoomDouble).x / _tileSize)
-              .ceil();
+      final wrapXMin = (crs.latLngToPoint(LatLng(0, wrapLng.$1), zoomDouble).x / _tileSize).floor();
+      final wrapXMax = (crs.latLngToPoint(LatLng(0, wrapLng.$2), zoomDouble).x / _tileSize).ceil();
       wrapX = (wrapXMin, wrapXMax - 1);
     }
 
     (int, int)? wrapY;
     if (crs.wrapLat case final wrapLat?) {
-      final wrapYMin =
-          (crs.latLngToPoint(LatLng(wrapLat.$1, 0), zoomDouble).y / _tileSize)
-              .floor();
-      final wrapYMax =
-          (crs.latLngToPoint(LatLng(wrapLat.$2, 0), zoomDouble).y / _tileSize)
-              .ceil();
+      final wrapYMin = (crs.latLngToPoint(LatLng(wrapLat.$1, 0), zoomDouble).y / _tileSize).floor();
+      final wrapYMax = (crs.latLngToPoint(LatLng(wrapLat.$2, 0), zoomDouble).y / _tileSize).ceil();
       wrapY = (wrapYMin, wrapYMax - 1);
     }
 

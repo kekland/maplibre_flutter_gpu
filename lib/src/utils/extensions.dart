@@ -1,32 +1,23 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 
-import 'package:maplibre_flutter_gpu/src/style/tile.dart';
+import 'package:maplibre_flutter_gpu/src/components/model/tiled_source.dart';
 import 'package:maplibre_flutter_gpu/src/vector_tile/model/_model.dart' as vt;
 import 'package:maplibre_style_spec/maplibre_style_spec.dart' as spec;
 
 extension SourceExtensions on spec.Source {
-  bool get isTiled => this is spec.SourceVector || this is spec.SourceRaster || this is spec.SourceRasterDem;
+  bool get isTiled {
+    if (this is! spec.SourceVector) return false;
+    return (this as spec.SourceVector).tiles?.isNotEmpty == true;
+  }
 
-  TiledSource createTiledSource(TileResolver resolver) {
+  TiledSource createTiledSource(Object key, TileResolverFunction resolver) {
     assert(isTiled);
 
     if (this is spec.SourceVector) {
       return VectorTiledSource(
-        key: this,
+        key: key,
         source: this as spec.SourceVector,
-        tileResolver: resolver,
-      );
-    } else if (this is spec.SourceRaster) {
-      return RasterTiledSource(
-        key: this,
-        source: this as spec.SourceRaster,
-        tileResolver: resolver,
-      );
-    } else if (this is spec.SourceRasterDem) {
-      return RasterDemTiledSource(
-        key: this,
-        source: this as spec.SourceRasterDem,
         tileResolver: resolver,
       );
     } else {

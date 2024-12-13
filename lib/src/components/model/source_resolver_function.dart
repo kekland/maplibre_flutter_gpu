@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:maplibre_flutter_gpu/src/components/utils/zoned_http_client.dart';
 import 'package:maplibre_style_spec/maplibre_style_spec.dart' as spec;
-import 'package:http/http.dart' as http;
 
-typedef SourceResolver = Future<spec.Source> Function(spec.Source source);
+typedef SourceResolverFunction = Future<spec.Source> Function(spec.Source source);
 
 Future<spec.Source> defaultSourceResolver(spec.Source source) async {
   return switch (source) {
@@ -17,7 +17,7 @@ Future<spec.Source> defaultSourceResolver(spec.Source source) async {
 }
 
 Future<spec.TileJson> _loadTileJson(Uri uri) async {
-  final response = await http.get(uri);
+  final response = await zonedHttpClient.get(uri);
 
   if (response.statusCode != 200) {
     throw Exception('Failed to load TileJSON: ${response.statusCode}');

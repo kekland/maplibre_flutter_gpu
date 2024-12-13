@@ -75,16 +75,16 @@ void debugPaintLayer(
     final _feature = feature;
 
     if (_feature is vt.MultiPointFeature) {
-      _drawMultiPointFeature(canvas, size, _feature);
+      // _drawMultiPointFeature(canvas, size, _feature);
     } else if (_feature is vt.MultiLineStringFeature) {
       _drawMultiLineStringFeature(canvas, size, _feature);
     } else if (_feature is vt.MultiPolygonFeature) {
-      _drawMultiPolygonFeature(
-        canvas,
-        size,
-        _feature,
-        Colors.primaries[(i++) % Colors.primaries.length],
-      );
+      // _drawMultiPolygonFeature(
+      //   canvas,
+      //   size,
+      //   _feature,
+      //   Colors.primaries[(i++) % Colors.primaries.length],
+      // );
 
       i++;
     }

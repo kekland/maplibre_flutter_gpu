@@ -1,7 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map/src/layer/tile_layer/tile_range.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:meta/meta.dart';
+import 'package:maplibre_flutter_gpu/src/vendor/flutter_map/tile_range.dart';
 
 /// The [TileRangeCalculator] helps to calculate the bounds in pixel.
 @immutable

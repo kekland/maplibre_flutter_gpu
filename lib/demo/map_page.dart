@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:maplibre_flutter_gpu/demo/fixtures/style.dart';
-import 'package:maplibre_flutter_gpu/src/style/maplibre_map_controller.dart';
-import 'package:maplibre_flutter_gpu/src/style/style_source.dart';
+import 'package:maplibre_flutter_gpu/src/components/model/style_source_function.dart';
+import 'package:maplibre_flutter_gpu/src/vendor/flutter_map/gpu_vector_tile_layer.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -15,48 +15,49 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  late MapLibreMapController _style;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _style = MapLibreMapController(
-      styleSource: createJsonStyleSource(jsonDecode(maptilerStreetsStyle)),
-    );
-
-    _style.addListener(() {
-      setState(() {});
-    });
-
-    _style.load();
-  }
-
-  @override
-  void dispose() {
-    _style.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
+    TileLayer;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Map'),
       ),
+      // backgroundColor: Colors.pink,
       body: FlutterMap(
         options: MapOptions(
+          // backgroundColor: Colors.pink,
           interactionOptions: InteractionOptions(
             flags: InteractiveFlag.all ^ InteractiveFlag.rotate,
           ),
+          // initialZoom: 0.0,
+          // initialCenter: const LatLng(0.0, 0.0),
+          // London
+          // initialZoom: 10.0,
+          // initialCenter: const LatLng(51.5074, -0.1278),
+          // Minden
+          // initialZoom: 15.0,
+          // initialCenter: const LatLng(52.2909650444652, 8.87692979746907),
+          // Almaty
           initialZoom: 13.0,
-          initialCenter: LatLng(43.2380, 76.8829),
+          initialCenter: const LatLng(43.2389498, 76.8897094),
+          // Milano
+          // initialZoom: 13.0,
+          // initialCenter: const LatLng(45.4642, 9.1900),
+          // Zurich
+          // initialZoom: 13.0,
+          // initialCenter: const LatLng(47.3769, 8.5417),
+          // New York
+          // initialZoom: 13.0,
+          // initialCenter: const LatLng(40.7128, -74.0060),
         ),
         children: [
-          if (_style.isLoaded) ..._style.buildLayers(context),
+          GpuVectorTileLayer(
+            styleSource: createJsonStyleSource(jsonDecode(maptilerStreetsStyle)),
+            tileSize: 256.0,
+          ),
           if (false)
             Opacity(
-              opacity: 0.5,
+              opacity: 1.0,
               child: TileLayer(
                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 userAgentPackageName: 'com.example.app',

@@ -28,8 +28,7 @@ dependencies:
   http: ^1.2.2
 
   # Map
-  flutter_map: 
-    path: ../flutter_map
+  flutter_map: ^7.0.2
   maplibre_style_spec:
     path: ../maplibre_style_spec
 
