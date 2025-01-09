@@ -6,6 +6,7 @@ import 'package:maplibre_flutter_gpu/src/components/model/tiled_source.dart';
 import 'package:maplibre_flutter_gpu/src/components/rendering/drawable.dart';
 import 'package:maplibre_flutter_gpu/src/components/rendering/implementations/line_layer_drawable.dart';
 import 'package:maplibre_style_spec/maplibre_style_spec.dart' as spec;
+import 'package:maplibre_flutter_gpu/src/vector_tile/_vector_tile.dart' as vt;
 
 class VectorTileProvider {
   VectorTileProvider({
@@ -19,6 +20,8 @@ class VectorTileProvider {
   final double zoomOffset;
   final List<VectorTiledSource> sources;
   final spec.Style style;
+
+  vt.Tile? debugVt;
 
   Future<List<Drawable>?> load(Completer<void> cancelLoading) async {
     final vectorTiles = await Future.wait(sources.map((v) => v.loadTile(coordinates)));
@@ -66,6 +69,7 @@ class VectorTileProvider {
     await Future.wait(prepareFutures);
     if (cancelLoading.isCompleted) return null;
 
+    debugVt = vectorTiles.first.data;
     return drawables;
   }
 }

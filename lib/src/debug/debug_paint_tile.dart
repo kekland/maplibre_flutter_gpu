@@ -8,11 +8,13 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:maplibre_flutter_gpu/src/vector_tile/model/_model.dart' as vt;
 
 void _drawMultiPointFeature(Canvas canvas, Size size, vt.MultiPointFeature feature) {
+  final color = Colors.primaries[(feature.attributes['class']?.hashCode ?? 0) % Colors.primaries.length];
+
   for (final point in feature.points) {
     canvas.drawCircle(
       point.toOffset(),
-      2.0,
-      Paint()..color = Colors.red,
+      32.0,
+      Paint()..color = color,
     );
   }
 }
@@ -75,9 +77,9 @@ void debugPaintLayer(
     final _feature = feature;
 
     if (_feature is vt.MultiPointFeature) {
-      // _drawMultiPointFeature(canvas, size, _feature);
+      _drawMultiPointFeature(canvas, size, _feature);
     } else if (_feature is vt.MultiLineStringFeature) {
-      _drawMultiLineStringFeature(canvas, size, _feature);
+      // _drawMultiLineStringFeature(canvas, size, _feature);
     } else if (_feature is vt.MultiPolygonFeature) {
       // _drawMultiPolygonFeature(
       //   canvas,

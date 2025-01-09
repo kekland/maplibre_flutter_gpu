@@ -29,8 +29,8 @@ class _MapPageState extends State<MapPage> {
           interactionOptions: InteractionOptions(
             flags: InteractiveFlag.all ^ InteractiveFlag.rotate,
           ),
-          // initialZoom: 0.0,
-          // initialCenter: const LatLng(0.0, 0.0),
+          // initialZoom: 0.0on,
+          // initialCenter: cst LatLng(0.0, 0.0),
           // London
           // initialZoom: 10.0,
           // initialCenter: const LatLng(51.5074, -0.1278),
