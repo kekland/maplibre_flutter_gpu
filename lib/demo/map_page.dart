@@ -52,7 +52,7 @@ class _MapPageState extends State<MapPage> {
         ),
         children: [
           GpuVectorTileLayer(
-            styleSource: createJsonStyleSource(jsonDecode(maptilerStreetsStyle)),
+            styleSource: createJsonStyleSource(jsonDecode(maptilerBasicStyle)),
             tileSize: 256.0,
           ),
           if (false)

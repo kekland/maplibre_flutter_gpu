@@ -89,8 +89,8 @@ class GpuVectorTilePainter extends CustomPainter {
             ..translate(-1.0, 1.0, 0.0)
             ..scale(1.0, -1.0, 0.0)
             ..scale(
-              1 / (width / 2.0),
-              1 / (height / 2.0),
+              1 / (width / pixelRatio),
+              1 / (height / pixelRatio),
             )
             ..translate(origin.dx, origin.dy)
             ..scale(scale, scale);
@@ -102,11 +102,13 @@ class GpuVectorTilePainter extends CustomPainter {
 
           if (_x < 0) {
             _width += _x;
+            _width = _width.clamp(0, width);
             _x = 0;
           }
 
           if (_y < 0) {
             _height += _y;
+            _height = _height.clamp(0, height);
             _y = 0;
           }
 
@@ -131,13 +133,13 @@ class GpuVectorTilePainter extends CustomPainter {
     commandBuffer.submit();
     final image = (resolveTexture ?? renderTexture).asImage();
 
-    canvas.scale(0.5);
+    canvas.scale(1 / pixelRatio);
     canvas.drawImage(
       image,
       Offset.zero,
       Paint(),
     );
-    canvas.scale(2.0);
+    canvas.scale(pixelRatio);
 
     for (final tile in tiles) {
       if (tile.tile.provider.debugVt != null) {

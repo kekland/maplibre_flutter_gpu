@@ -13,7 +13,7 @@ void _drawMultiPointFeature(Canvas canvas, Size size, vt.MultiPointFeature featu
   for (final point in feature.points) {
     canvas.drawCircle(
       point.toOffset(),
-      32.0,
+      16.0,
       Paint()..color = color,
     );
   }
@@ -98,6 +98,8 @@ void debugPaintTile(
   Size size,
   vt.Tile tile,
 ) {
+  return;
+  
   for (final layer in tile.layers) {
     debugPaintLayer(
       canvas,
