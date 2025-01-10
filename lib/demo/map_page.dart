@@ -32,14 +32,14 @@ class _MapPageState extends State<MapPage> {
           // initialZoom: 0.0on,
           // initialCenter: cst LatLng(0.0, 0.0),
           // London
-          // initialZoom: 10.0,
-          // initialCenter: const LatLng(51.5074, -0.1278),
+          initialZoom: 10.0,
+          initialCenter: const LatLng(51.5074, -0.1278),
           // Minden
           // initialZoom: 15.0,
           // initialCenter: const LatLng(52.2909650444652, 8.87692979746907),
           // Almaty
-          initialZoom: 13.0,
-          initialCenter: const LatLng(43.2389498, 76.8897094),
+          // initialZoom: 13.0,
+          // initialCenter: const LatLng(43.2389498, 76.8897094),
           // Milano
           // initialZoom: 13.0,
           // initialCenter: const LatLng(45.4642, 9.1900),

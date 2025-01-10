@@ -39,6 +39,12 @@ class LineLayerDrawable extends TileLayerDrawable<spec.LayerLine> {
       return specLayer.filter!(evalContext.extendWith(properties: feature.attributes));
     });
 
+    // TODO
+    final lineCap = specLayer.layout.lineCap.evaluate(evalContext);
+    final lineJoin = specLayer.layout.lineJoin.evaluate(evalContext);
+    final miterLimit = specLayer.layout.lineMiterLimit.evaluate(evalContext);
+    final roundLimit = specLayer.layout.lineRoundLimit.evaluate(evalContext);
+
     if (features.isEmpty) return false;
     _pipeline = LineLayerShaderPipeline();
 
