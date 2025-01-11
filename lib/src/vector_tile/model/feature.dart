@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:maplibre_flutter_gpu/src/vector_tile/proto/_proto.dart' as pb;
 import 'package:maplibre_flutter_gpu/src/vector_tile/model/geometry.dart';
+import 'package:fixnum/fixnum.dart' as fixnum;
 
 abstract class Feature {
   Feature(this.attributes);
@@ -20,7 +21,15 @@ abstract class Feature {
       final keyIndex = feature.tags[i];
       final valueIndex = feature.tags[i + 1];
 
-      attributes[keys[keyIndex]] = values[valueIndex];
+      // Convert the value from Protobuf types to Dart types.
+      final pbValue = values[valueIndex];
+      final dartValue = switch (pbValue) {
+        fixnum.Int32 v => v.toInt(),
+        fixnum.Int64 v => v.toInt(),
+        _ => pbValue,
+      };
+
+      attributes[keys[keyIndex]] = dartValue;
     }
 
     return switch (feature.type) {

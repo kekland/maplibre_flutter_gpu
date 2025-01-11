@@ -30,7 +30,11 @@ Future<spec.SourceVector> _defaultVectorSourceResolver(spec.SourceVector source)
   if (source.tiles != null) return source;
   if (source.url != null) {
     final tileJson = await _loadTileJson(Uri.parse(source.url!));
-    return source.copyWith(tiles: tileJson.tiles);
+    return source.copyWith(
+      tiles: tileJson.tiles,
+      minzoom: tileJson.minzoom,
+      maxzoom: tileJson.maxzoom,
+    );
   }
 
   return source;

@@ -78,7 +78,7 @@ abstract class VertexShaderBindings extends ShaderBindings {
 
   final int bytesPerVertex;
 
-  int? _vertexCount;
+  int? vertexCount;
   int? _indexCount;
 
   ByteData? vertexData;
@@ -97,9 +97,9 @@ abstract class VertexShaderBindings extends ShaderBindings {
   }
 
   void allocateVertices(gpu.GpuContext context, int vertexCount) {
-    if (_vertexCount == vertexCount) return;
+    if (this.vertexCount == vertexCount) return;
 
-    _vertexCount = vertexCount;
+    this.vertexCount = vertexCount;
     vertexData = ByteData(vertexCount * bytesPerVertex);
 
     _maybeResetBuffers();
@@ -162,7 +162,7 @@ abstract class VertexShaderBindings extends ShaderBindings {
     if (_buffer == null) return;
 
     if (_vertexBufferView != null) {
-      pass.bindVertexBuffer(_vertexBufferView!, _vertexCount!);
+      pass.bindVertexBuffer(_vertexBufferView!, vertexCount!);
     }
 
     if (_indexBufferView != null) {

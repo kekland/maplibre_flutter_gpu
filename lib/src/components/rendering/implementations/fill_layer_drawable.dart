@@ -98,6 +98,5 @@ class FillLayerDrawable extends TileLayerDrawable<spec.LayerFill> {
     );
 
     _pipeline!.bind(context, pass);
-    pass.draw();
   }
 }

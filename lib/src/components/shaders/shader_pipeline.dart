@@ -8,11 +8,15 @@ class ShaderPipeline<TV extends VertexShaderBindings, TF extends FragmentShaderB
   final TF fragment;
   gpu.RenderPipeline? pipeline;
 
+  bool _isUploaded = false;
+  bool get isUploaded => _isUploaded;
+
   void upload(gpu.GpuContext context) {
     vertex.upload(context);
     fragment.upload(context);
 
     pipeline = context.createRenderPipeline(vertex.shader, fragment.shader);
+    _isUploaded = true;
   }
 
   void bind(gpu.GpuContext context, gpu.RenderPass pass) {

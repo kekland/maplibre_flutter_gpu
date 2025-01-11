@@ -17,13 +17,21 @@
       "name": "maplibre_flutter_gpu (profile mode)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "profile"
+      "flutterMode": "profile",
+      "args": [
+        "--enable-impeller",
+        "--enable-experiment=native-assets"
+      ]
     },
     {
       "name": "maplibre_flutter_gpu (release mode)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "release"
+      "flutterMode": "release",
+      "args": [
+        "--enable-impeller",
+        "--enable-experiment=native-assets"
+      ]
     }
   ]
 }

@@ -344,11 +344,9 @@ packages:
   maplibre_style_spec:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "0d1a26b"
-      resolved-ref: "0d1a26be0e56aad87cf4d52dc431f919c22109d9"
-      url: "https://github.com/kekland/maplibre_style_spec_dart"
-    source: git
+      path: "../maplibre_style_spec"
+      relative: true
+    source: path
     version: "1.0.0"
   matcher:
     dependency: transitive

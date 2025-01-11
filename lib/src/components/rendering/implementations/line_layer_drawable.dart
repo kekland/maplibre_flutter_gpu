@@ -144,6 +144,5 @@ class LineLayerDrawable extends TileLayerDrawable<spec.LayerLine> {
     );
 
     _pipeline!.bind(context, pass);
-    pass.draw();
   }
 }

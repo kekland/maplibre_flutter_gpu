@@ -30,9 +30,8 @@ dependencies:
   # Map
   flutter_map: ^7.0.2
   maplibre_style_spec:
-    git:
-      url: https://github.com/kekland/maplibre_style_spec_dart
-      ref: 0d1a26b
+    path: ../maplibre_style_spec
+    
 
   # Utils
   collection: ^1.19.0
