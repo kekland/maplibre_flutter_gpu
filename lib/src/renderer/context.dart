@@ -16,7 +16,6 @@ class RenderContext {
     required this.size,
     required this.pixelRatio,
     required this.camera,
-    required this.unscaledTileSize,
     required this.tileScaleCalculator,
     required this.eval,
   });
@@ -25,12 +24,11 @@ class RenderContext {
   final Size size;
   final double pixelRatio;
   final MapCamera camera;
-  final double unscaledTileSize;
   final EvaluationContext eval;
   final TileScaleCalculator tileScaleCalculator;
 
-  double getScaledTileSize(TileCoordinates coordinates) =>
-      tileScaleCalculator.scaledTileSize(camera.zoom, coordinates.z);
+  double getScaledTileDimension(TileCoordinates coordinates) =>
+      tileScaleCalculator.scaledTileDimension(camera.zoom, coordinates.z);
 
   Size get scaledSize => size * pixelRatio;
 
@@ -40,23 +38,23 @@ class RenderContext {
     worldToGl.translate(-1.0, 1.0);
     worldToGl.scale(pixelRatio);
     worldToGl.scale(2.0 / scaledSize.width, -2.0 / scaledSize.height);
-    worldToGl.translate(-camera.pixelOrigin.x, -camera.pixelOrigin.y);
+    worldToGl.translate(-camera.pixelOrigin.dx, -camera.pixelOrigin.dy);
 
     return worldToGl;
   }
 
   void setTileScissor(RenderPass pass, TileCoordinates coordinates) {
-    final scaledTileSize = getScaledTileSize(coordinates);
+    final scaledTileDimension = getScaledTileDimension(coordinates);
 
     final origin = Offset(
-      coordinates.x * scaledTileSize - camera.pixelOrigin.x,
-      coordinates.y * scaledTileSize - camera.pixelOrigin.y,
+      coordinates.x * scaledTileDimension - camera.pixelOrigin.dx,
+      coordinates.y * scaledTileDimension - camera.pixelOrigin.dy,
     );
 
     var _x = (origin.dx * pixelRatio).ceil();
     var _y = (origin.dy * pixelRatio).ceil();
-    var _width = (scaledTileSize * pixelRatio).ceil();
-    var _height = (scaledTileSize * pixelRatio).ceil();
+    var _width = (scaledTileDimension * pixelRatio).ceil();
+    var _height = (scaledTileDimension * pixelRatio).ceil();
 
     if (_x < 0) {
       _width += _x;

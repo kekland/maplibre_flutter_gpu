@@ -6,18 +6,18 @@ class RenderOrchestratorPainter extends CustomPainter {
   RenderOrchestratorPainter({
     required this.camera,
     required this.pixelRatio,
-    required this.tileSize,
+    required this.tileDimension,
     required this.orchestrator,
   }) : super(repaint: orchestrator);
 
   final MapCamera camera;
   final double pixelRatio;
-  final double tileSize;
+  final int tileDimension;
   final VectorTileLayerRenderOrchestrator orchestrator;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final image = orchestrator.draw(camera: camera, pixelRatio: pixelRatio, size: size, tileSize: tileSize);
+    final image = orchestrator.draw(camera: camera, pixelRatio: pixelRatio, size: size, tileDimension: tileDimension);
     if (image == null) return;
 
     canvas.scale(1 / pixelRatio);

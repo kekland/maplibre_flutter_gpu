@@ -65,7 +65,7 @@ class VectorTileLayerController with ChangeNotifier {
       notifyListeners();
 
       // Trigger camera changed to set the initial visible tiles
-      if (_lastCamera != null) onCameraChanged(_lastCamera!, _lastTileSize!);
+      if (_lastCamera != null) onCameraChanged(_lastCamera!, _lastDimension!);
     } catch (e) {
       _logger.severe('Failed to load style', e);
       rethrow;
@@ -91,7 +91,7 @@ class VectorTileLayerController with ChangeNotifier {
   }
 
   fm.MapCamera? _lastCamera;
-  double? _lastTileSize;
+  int? _lastDimension;
   TileRangeCalculator? _tileRangeCalculator;
   Map<Object, TileBounds>? _tileBoundsForSources;
 
@@ -101,15 +101,16 @@ class VectorTileLayerController with ChangeNotifier {
   ///
   /// If the style hasn't been loaded yet, it will trigger updates once it's loaded, using the latest state of the
   /// camera passed to this method.
-  void onCameraChanged(fm.MapCamera camera, double tileSize) {
+  void onCameraChanged(fm.MapCamera camera, int tileDimension) {
     _lastCamera = camera;
-    _lastTileSize = tileSize;
+    _lastDimension = tileDimension;
     if (!isLoaded) return;
 
     final crs = camera.crs;
 
     // Check if we need to update the tile range calculator
-    if (_tileRangeCalculator?.tileSize != tileSize) _tileRangeCalculator = TileRangeCalculator(tileSize: tileSize);
+    if (_tileRangeCalculator?.tileDimension != tileDimension)
+      _tileRangeCalculator = TileRangeCalculator(tileDimension: tileDimension);
 
     // Check if we need to update the tile bounds for sources
     _tileBoundsForSources ??= {};
@@ -118,7 +119,7 @@ class VectorTileLayerController with ChangeNotifier {
       final source = entry.value;
 
       final existingBounds = _tileBoundsForSources![key];
-      if (existingBounds != null && !existingBounds.shouldReplace(crs, tileSize, null)) continue;
+      if (existingBounds != null && !existingBounds.shouldReplace(crs, tileDimension, null)) continue;
 
       if (source is spec.SourceVector && source.tiles != null) {
         final bounds = fm.LatLngBounds.unsafe(
@@ -128,7 +129,7 @@ class VectorTileLayerController with ChangeNotifier {
           west: source.bounds[0].toDouble(),
         );
 
-        _tileBoundsForSources![key] = TileBounds(crs: crs, tileSize: tileSize, latLngBounds: bounds);
+        _tileBoundsForSources![key] = TileBounds(crs: crs, tileDimension: tileDimension, latLngBounds: bounds);
       }
     }
 
@@ -143,7 +144,7 @@ class VectorTileLayerController with ChangeNotifier {
       final sourceKey = entry.key;
       final source = style.sources[sourceKey]! as spec.SourceVector;
       final bounds = entry.value;
-      
+
       // todo: clean this up
       final zoomForSource = tileZoom.clamp(source.minzoom, source.maxzoom).toInt();
       final boundsAtZoom = bounds.atZoom(zoomForSource);

@@ -81,16 +81,16 @@ class VectorTileLayerRenderOrchestrator with ChangeNotifier {
   }
 
   fm.MapCamera? _lastCamera;
-  double? _lastTileSize;
+  int? _lastTileDimension;
   TileScaleCalculator? _tileScaleCalculator;
 
-  void onCameraChanged(fm.MapCamera camera, double tileSize) {
-    if (_tileScaleCalculator == null || tileSize != _lastTileSize) {
-      _tileScaleCalculator = TileScaleCalculator(crs: camera.crs, tileSize: tileSize);
+  void onCameraChanged(fm.MapCamera camera, int tileDimension) {
+    if (_tileScaleCalculator == null || tileDimension != _lastTileDimension) {
+      _tileScaleCalculator = TileScaleCalculator(crs: camera.crs, tileDimension: tileDimension);
     }
 
     _lastCamera = camera;
-    _lastTileSize = tileSize;
+    _lastTileDimension = tileDimension;
     _tileScaleCalculator!.clearCacheUnlessZoomMatches(camera.zoom);
   }
 
@@ -134,7 +134,7 @@ class VectorTileLayerRenderOrchestrator with ChangeNotifier {
     required ui.Size size,
     required double pixelRatio,
     required fm.MapCamera camera,
-    required double tileSize,
+    required int tileDimension,
   }) {
     if (_layers == null) return null;
     _setupTextures(size, pixelRatio);
@@ -171,7 +171,6 @@ class VectorTileLayerRenderOrchestrator with ChangeNotifier {
       size: size,
       pixelRatio: pixelRatio,
       camera: camera,
-      unscaledTileSize: tileSize,
       tileScaleCalculator: _tileScaleCalculator!,
       eval: spec.EvaluationContext(geometryType: '', zoom: camera.zoom, locale: spec.Locale(languageCode: 'en')),
     );

@@ -188,8 +188,8 @@ abstract class LineLayerRenderer extends SingleTileLayerRenderer<spec.LayerLine>
   void draw(RenderContext context) {
     if (!pipeline.isReady) return;
 
-    final tileSize = context.getScaledTileSize(coordinates);
-    final origin = ui.Offset(coordinates.x * tileSize, coordinates.y * tileSize);
+    final tileDimension = context.getScaledTileDimension(coordinates);
+    final origin = ui.Offset(coordinates.x * tileDimension, coordinates.y * tileDimension);
     final tileLocalToWorld = Matrix4.identity()..translate(origin.dx, origin.dy);
 
     setUniforms(
@@ -198,7 +198,7 @@ abstract class LineLayerRenderer extends SingleTileLayerRenderer<spec.LayerLine>
       context.camera.zoom,
       context.pixelRatio,
       tileLocalToWorld,
-      tileSize,
+      tileDimension,
       vtLayer.extent.toDouble(),
       container.opacityAnimation.value,
     );
