@@ -9,7 +9,7 @@ class FlutterGpuVectorTileLayer extends StatefulWidget {
   const FlutterGpuVectorTileLayer({
     super.key,
     required this.styleProvider,
-    this.tileSize = 256.0,
+    this.tileDimension = 256,
     required this.shaderLibrary,
     required this.createSingleTileLayerRenderer,
     this.enableRender = true,
@@ -19,7 +19,7 @@ class FlutterGpuVectorTileLayer extends StatefulWidget {
   final StyleProviderFn styleProvider;
   final ShaderLibrary shaderLibrary;
   final CreateSingleTileLayerRendererFn createSingleTileLayerRenderer;
-  final double tileSize;
+  final int tileDimension;
   final bool enableRender; // Temporary!
   final bool debug; // Temporary!
 
@@ -64,8 +64,8 @@ class FlutterGpuVectorTileLayerState extends State<FlutterGpuVectorTileLayer> wi
     super.didChangeDependencies();
 
     final camera = MapCamera.of(context);
-    _controller.onCameraChanged(camera, widget.tileSize);
-    _orchestrator.onCameraChanged(camera, widget.tileSize);
+    _controller.onCameraChanged(camera, widget.tileDimension);
+    _orchestrator.onCameraChanged(camera, widget.tileDimension);
   }
 
   @override
@@ -82,12 +82,14 @@ class FlutterGpuVectorTileLayerState extends State<FlutterGpuVectorTileLayer> wi
               painter: RenderOrchestratorPainter(
                 camera: camera,
                 pixelRatio: pixelRatio,
-                tileSize: widget.tileSize,
+                tileDimension: widget.tileDimension,
                 orchestrator: _orchestrator,
               ),
             ),
           if (widget.debug)
-            CustomPaint(painter: MapDebugPainter(camera: camera, controller: _controller, tileSize: widget.tileSize)),
+            CustomPaint(
+              painter: MapDebugPainter(camera: camera, controller: _controller, tileDimension: widget.tileDimension),
+            ),
         ],
       ),
     );

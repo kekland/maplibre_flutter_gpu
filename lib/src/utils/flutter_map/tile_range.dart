@@ -1,7 +1,10 @@
 import 'dart:math' as math hide Point;
 import 'dart:math' show Point;
+import 'dart:ui';
 
 import 'package:flutter_map/flutter_map.dart';
+import 'package:gpu_vector_tile_renderer/src/utils/flutter_map/extensions.dart';
+import 'package:gpu_vector_tile_renderer/src/utils/flutter_map/integer_bounds.dart';
 import 'package:meta/meta.dart';
 
 /// A range of tiles, this is normally a [DiscreteTileRange] and sometimes
@@ -25,15 +28,18 @@ class EmptyTileRange extends TileRange {
   const EmptyTileRange._(super.zoom);
 
   @override
-  Iterable<TileCoordinates> get coordinates =>
-      const Iterable<TileCoordinates>.empty();
+  Iterable<TileCoordinates> get coordinates => const Iterable<TileCoordinates>.empty();
 }
+
+Point<int> _floor(Offset point) => Point<int>(point.dx.floor(), point.dy.floor());
+
+Point<int> _ceil(Offset point) => Point<int>(point.dx.ceil(), point.dy.ceil());
 
 /// Every [TileRange] is a [DiscreteTileRange] if it's not an [EmptyTileRange].
 @immutable
 class DiscreteTileRange extends TileRange {
   /// Bounds are inclusive
-  final Bounds<int> _bounds;
+  final IntegerBounds _bounds;
 
   /// Create a new [DiscreteTileRange] by setting it's values.
   const DiscreteTileRange(super.zoom, this._bounds);
@@ -41,17 +47,17 @@ class DiscreteTileRange extends TileRange {
   /// Calculate a [DiscreteTileRange] by using the pixel bounds.
   factory DiscreteTileRange.fromPixelBounds({
     required int zoom,
-    required double tileSize,
-    required Bounds<double> pixelBounds,
+    required int tileDimension,
+    required Rect pixelBounds,
   }) {
-    final Bounds<int> bounds;
-    if (pixelBounds.min == pixelBounds.max) {
-      final minAndMax = (pixelBounds.min / tileSize).floor();
-      bounds = Bounds<int>(minAndMax, minAndMax);
+    final IntegerBounds bounds;
+    if (pixelBounds.isEmpty) {
+      final minAndMax = _floor(pixelBounds.min / tileDimension.toDouble());
+      bounds = IntegerBounds(minAndMax, minAndMax);
     } else {
-      bounds = Bounds<int>(
-        (pixelBounds.min / tileSize).floor(),
-        (pixelBounds.max / tileSize).ceil() - const Point(1, 1),
+      bounds = IntegerBounds(
+        _floor(pixelBounds.min / tileDimension.toDouble()),
+        _ceil(pixelBounds.max / tileDimension.toDouble()) - const Point(1, 1),
       );
     }
 
@@ -88,10 +94,7 @@ class DiscreteTileRange extends TileRange {
 
     return DiscreteTileRange(
       zoom,
-      Bounds<int>(
-        Point<int>(math.max(min.x, minX), min.y),
-        Point<int>(math.min(max.x, maxX), max.y),
-      ),
+      IntegerBounds(Point<int>(math.max(min.x, minX), min.y), Point<int>(math.min(max.x, maxX), max.y)),
     );
   }
 
@@ -103,16 +106,32 @@ class DiscreteTileRange extends TileRange {
 
     return DiscreteTileRange(
       zoom,
-      Bounds<int>(
-        Point<int>(min.x, math.max(min.y, minY)),
-        Point<int>(max.x, math.min(max.y, maxY)),
-      ),
+      IntegerBounds(Point<int>(min.x, math.max(min.y, minY)), Point<int>(max.x, math.min(max.y, maxY))),
     );
   }
 
   /// Check if a [Point] is inside of the bounds of the [DiscreteTileRange].
-  bool contains(Point<int> point) {
-    return _bounds.contains(point);
+  ///
+  /// We use a modulo in order to prevent side-effects at the end of the world.
+  bool contains(Point<int> point, {bool replicatesWorldLongitude = false}) {
+    if (!replicatesWorldLongitude) {
+      return _bounds.contains(point);
+    }
+
+    final int modulo = 1 << zoom;
+
+    bool containsCoordinate(int value, int min, int max) {
+      int tmp = value;
+      while (tmp < min) {
+        tmp += modulo;
+      }
+      while (tmp > max) {
+        tmp -= modulo;
+      }
+      return tmp >= min && tmp <= max;
+    }
+
+    return containsCoordinate(point.x, min.x, max.x) && containsCoordinate(point.y, min.y, max.y);
   }
 
   /// The minimum [Point] of the [DiscreteTileRange]
@@ -122,7 +141,7 @@ class DiscreteTileRange extends TileRange {
   Point<int> get max => _bounds.max;
 
   /// The center [Point] of the [DiscreteTileRange]
-  Point<double> get center => _bounds.center;
+  Offset get center => _bounds.center;
 
   /// Get a list of [TileCoordinates] for the [DiscreteTileRange].
   @override

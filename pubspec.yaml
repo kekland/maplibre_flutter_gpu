@@ -1,5 +1,5 @@
 name: gpu_vector_tile_renderer
-description: 'A MapLibre style spec (v8) compatible vector tile renderer for Flutter, using flutter_gpu'
+description: "A MapLibre style spec (v8) compatible vector tile renderer for Flutter, using flutter_gpu"
 version: 0.0.1
 
 environment:
@@ -21,9 +21,10 @@ dependencies:
   intl: ^0.20.2
   vector_math: ^2.1.4
   logging: ^1.2.0
-  
+  meta: ^1.16.0
+
   # Map
-  flutter_map: ^7.0.2
+  flutter_map: ^8.0.0
   latlong2: ^0.9.1
   dart_earcut: ^1.2.0
 
