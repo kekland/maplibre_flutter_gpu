@@ -11,14 +11,13 @@ import 'package:gpu_vector_tile_renderer/src/isolates/isolates.dart';
 import 'package:gpu_vector_tile_renderer/src/utils/flutter_map/tile_scale_calculator.dart';
 import 'package:vector_math/vector_math.dart' as vm32;
 
-typedef CreateSingleTileLayerRendererFn =
-    SingleTileLayerRenderer? Function(
-      gpu.ShaderLibrary shaderLibrary,
-      fm.TileCoordinates coordinates,
-      TileContainer container,
-      spec.Layer specLayer,
-      vt.Layer vtLayer,
-    );
+typedef CreateSingleTileLayerRendererFn = SingleTileLayerRenderer? Function(
+  gpu.ShaderLibrary shaderLibrary,
+  fm.TileCoordinates coordinates,
+  TileContainer container,
+  spec.Layer specLayer,
+  vt.Layer vtLayer,
+);
 
 class VectorTileLayerRenderOrchestrator with ChangeNotifier {
   VectorTileLayerRenderOrchestrator({
@@ -103,31 +102,30 @@ class VectorTileLayerRenderOrchestrator with ChangeNotifier {
 
     if (_texture != null && _texture!.width == width && _texture!.height == height) return;
 
-    if (gpu.gpuContext.doesSupportOffscreenMSAA) {
-      _texture = gpu.gpuContext.createTexture(
-        gpu.StorageMode.hostVisible,
-        width,
-        height,
-        sampleCount: 4,
-        format: gpu.PixelFormat.r8g8b8a8UNormIntSRGB,
-      );
+    // if (gpu.gpuContext.doesSupportOffscreenMSAA) {
+    //   _texture = gpu.gpuContext.createTexture(
+    //     gpu.StorageMode.hostVisible,
+    //     width,
+    //     height,
+    //     sampleCount: 4,
+    //     format: gpu.PixelFormat.r8g8b8a8UNormIntSRGB,
+    //   );
 
-      _resolveTexture = gpu.gpuContext.createTexture(
-        gpu.StorageMode.hostVisible,
-        width,
-        height,
-        sampleCount: 1,
-        format: gpu.PixelFormat.r8g8b8a8UNormIntSRGB,
-      );
-    } else {
-      _texture = gpu.gpuContext.createTexture(
-        gpu.StorageMode.hostVisible,
-        width,
-        height,
-        format: gpu.PixelFormat.r8g8b8a8UNormIntSRGB,
-      );
-      _resolveTexture = null;
-    }
+    //   _resolveTexture = gpu.gpuContext.createTexture(
+    //     gpu.StorageMode.hostVisible,
+    //     width,
+    //     height,
+    //     sampleCount: 1,
+    //     format: gpu.PixelFormat.r8g8b8a8UNormIntSRGB,
+    //   );
+    // } else {
+    _texture = gpu.gpuContext.createTexture(
+      gpu.StorageMode.hostVisible,
+      width,
+      height,
+    );
+    _resolveTexture = null;
+    // }
   }
 
   ui.Image? draw({

@@ -70,6 +70,6 @@ class RenderContext {
       _y = 0;
     }
 
-    pass.setScissor(Scissor(x: _x, y: _y, width: _width, height: _height));
+    // pass.setScissor(Scissor(x: _x, y: _y, width: _width, height: _height));
   }
 }

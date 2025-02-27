@@ -59,7 +59,7 @@ abstract class FillLayerRenderer extends SingleTileLayerRenderer<spec.LayerFill>
       final polygons = feature.polygons;
 
       for (final polygon in polygons) {
-        final indices = await Tessellator.tessellatePolygonIsolate(polygon);
+        final indices = Tessellator.tessellatePolygon(polygon);
         indicesList.addAll(indices.map((i) => i + indicesVertexIndex));
         indicesVertexIndex += polygon.vertexCount;
       }

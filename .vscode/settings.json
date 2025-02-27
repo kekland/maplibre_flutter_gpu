@@ -1,5 +1,5 @@
 {
-  "dart.flutterSdkPath": ".fvm/versions/master",
+  "dart.flutterSdkPath": ".fvm/versions/3.27.1",
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
@@ -7,14 +7,13 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
-    // "**/.dart_tool": true,
     ".fvm": true,
     "**/.idea": true,
     "**/*.iml": true,
     ".metadata": true,
     "build": true,
     "pubspec.lock": true,
-    ".fvmrc": true,
+    ".fvmrc": true
   },
   "editor.rulers": [
     120
@@ -24,4 +23,5 @@
     "unordered_map": "cpp",
     "new": "cpp"
   },
+  "dart.lineLength": 120,
 }

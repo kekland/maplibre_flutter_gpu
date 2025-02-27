@@ -70,7 +70,7 @@ abstract class UniformBufferObjectBindings {
       _buffer ??= context.createDeviceBuffer(gpu.StorageMode.hostVisible, data.lengthInBytes);
       _bufferView ??= gpu.BufferView(_buffer!, offsetInBytes: 0, lengthInBytes: data.lengthInBytes);
       _buffer!.overwrite(data);
-      _buffer!.flush();
+      _buffer!.flush(offsetInBytes: 0, lengthInBytes: data.lengthInBytes);
       needsFlush = false;
     }
 
@@ -142,14 +142,14 @@ abstract class VertexShaderBindings extends ShaderBindings {
       _vertexBuffer ??= context.createDeviceBuffer(gpu.StorageMode.hostVisible, vertexData!.lengthInBytes);
       _vertexBufferView = gpu.BufferView(_vertexBuffer!, offsetInBytes: 0, lengthInBytes: vertexData!.lengthInBytes);
       _vertexBuffer!.overwrite(vertexData!);
-      _vertexBuffer!.flush();
+      _vertexBuffer!.flush(offsetInBytes: 0, lengthInBytes: vertexData!.lengthInBytes);
     }
 
     if (_indexData != null) {
       _indexBuffer ??= context.createDeviceBuffer(gpu.StorageMode.hostVisible, _indexData!.lengthInBytes);
       _indexBufferView = gpu.BufferView(_indexBuffer!, offsetInBytes: 0, lengthInBytes: _indexData!.lengthInBytes);
       _indexBuffer!.overwrite(_indexData!);
-      _indexBuffer!.flush();
+      _indexBuffer!.flush(offsetInBytes: 0, lengthInBytes: _indexData!.lengthInBytes);
     }
   }
 
